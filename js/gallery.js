@@ -2,8 +2,12 @@ class Gallery {
   #container;
   #arrayOfImages;
 
+  #currentPreviewImageIndex = 0;
   #imageElements = [];
   #previewContainer = null;
+
+  #arrowLeft;
+  #arrowRight;
 
   constructor(container, arrayOfImages) {
     this.#container = container;
@@ -14,18 +18,44 @@ class Gallery {
   }
 
   #formatToHtmlElements() {
-    this.#imageElements = this.#arrayOfImages.map((imgPath) => {
+    this.#imageElements = this.#arrayOfImages.map((imgPath, idx) => {
       const imgElement = document.createElement("img");
       imgElement.setAttribute("src", imgPath);
+      imgElement.setAttribute("data-index", idx);
       return imgElement;
     });
+  }
+
+  #refreshPreview() {
+    const { src } = this.#imageElements[this.#currentPreviewImageIndex];
+
+    if (this.#currentPreviewImageIndex === 0) {
+      this.#arrowLeft.style = "visibility: hidden";
+    } else {
+      this.#arrowLeft.style = "visibility: visibile";
+    }
+
+    if (this.#currentPreviewImageIndex === this.#imageElements.length - 1) {
+      this.#arrowRight.style = "visibility: hidden";
+    } else {
+      this.#arrowRight.style = "visibility: visibile";
+    }
+
+    // console.log(this.#imageElements);
+    // console.log(this.#currentPreviewImageIndex);
+    // console.dir(this.#imageElements[this.#currentPreviewImageIndex]);
+
+    this.#previewContainer.querySelector("img").setAttribute("src", src);
   }
 
   #changePreviewImage = (e) => {
     if (e.target.tagName !== "IMG") return;
 
-    this.#previewContainer.innerHTML = "";
-    this.#previewContainer.appendChild(e.target.cloneNode());
+    const { dataset } = e.target;
+
+    this.#currentPreviewImageIndex = Number(dataset.index);
+
+    this.#refreshPreview();
   };
 
   #createThumbnails() {
@@ -44,7 +74,8 @@ class Gallery {
     this.#previewContainer = document.createElement("div");
     this.#previewContainer.classList.add("preview");
 
-    const firstImageCopy = this.#imageElements[0].cloneNode();
+    const firstImageCopy =
+      this.#imageElements[this.#currentPreviewImageIndex].cloneNode();
 
     this.#previewContainer.appendChild(firstImageCopy);
     this.#container.appendChild(this.#previewContainer);
@@ -55,9 +86,45 @@ class Gallery {
     //     this.#container.appendChild(el);
     //   });
     this.#createPreview();
+    this.#createArrowElement();
     this.#createThumbnails();
 
-    console.log("cr", this);
+    this.#refreshPreview();
+  }
+
+  scrollThumbnails() {
+    this.thumbnailsContainer;
+  }
+
+  #createArrowElement() {
+    const arrowContainer = document.createElement("div");
+    arrowContainer.classList.add("arrows");
+
+    this.#arrowLeft = document.createElement("button");
+    this.#arrowLeft.classList.add("left");
+    this.#arrowLeft.addEventListener("click", () => {
+      if (this.#currentPreviewImageIndex <= 0) {
+        return;
+      }
+
+      this.#currentPreviewImageIndex--;
+      this.#refreshPreview();
+    });
+    arrowContainer.appendChild(this.#arrowLeft);
+
+    this.#arrowRight = document.createElement("button");
+    this.#arrowRight.classList.add("right");
+    this.#arrowRight.addEventListener("click", () => {
+      if (this.#currentPreviewImageIndex >= this.#imageElements.length - 1) {
+        return;
+      }
+
+      this.#currentPreviewImageIndex++;
+      this.#refreshPreview();
+    });
+    arrowContainer.appendChild(this.#arrowRight);
+
+    this.#previewContainer.appendChild(arrowContainer);
   }
 }
 

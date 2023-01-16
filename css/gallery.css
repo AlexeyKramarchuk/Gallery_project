@@ -1,0 +1,49 @@
+.gallery {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: start;
+  gap: 30px;
+}
+
+.thumbnails {
+  display: flex;
+  flex-direction: column;
+  width: 85px;
+  height: 400px;
+  gap: 5px;
+
+  overflow-y: auto;
+}
+
+.preview {
+  position: relative;
+}
+
+.preview:hover .arrows {
+  display: flex;
+}
+
+.arrows {
+  align-items: center;
+  display: none;
+  justify-content: space-between;
+  inset: 0;
+  padding: 8px;
+  position: absolute;
+}
+
+.left,
+.right {
+  border: 20px solid transparent;
+  display: inline-flex;
+}
+
+.left {
+  border-right: 20px solid grey;
+  border-left: none;
+}
+
+.right {
+  border-left: 20px solid grey;
+  border-right: none;
+}
