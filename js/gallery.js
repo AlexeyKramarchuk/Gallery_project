@@ -42,8 +42,13 @@ class Gallery {
     }
 
     // console.log(this.#imageElements);
-    // console.log(this.#currentPreviewImageIndex);
-    // console.dir(this.#imageElements[this.#currentPreviewImageIndex]);
+    console.log(this.#currentPreviewImageIndex);
+    console.dir(this.#imageElements[this.#currentPreviewImageIndex]);
+    
+  
+
+    this.#imageElements[this.#currentPreviewImageIndex].classList.add("active");
+    
 
     this.#previewContainer.querySelector("img").setAttribute("src", src);
   }
@@ -56,6 +61,7 @@ class Gallery {
     this.#currentPreviewImageIndex = Number(dataset.index);
 
     this.#refreshPreview();
+
   };
 
   #createThumbnails() {
@@ -68,8 +74,10 @@ class Gallery {
     });
 
     this.#container.appendChild(thumbnailsContainer);
-  }
 
+  
+  }
+  
   #createPreview() {
     this.#previewContainer = document.createElement("div");
     this.#previewContainer.classList.add("preview");
