@@ -42,11 +42,15 @@ class Gallery {
     }
 
     // console.log(this.#imageElements);
-    console.log(this.#currentPreviewImageIndex);
-    console.dir(this.#imageElements[this.#currentPreviewImageIndex]);
+    // console.log(this.#currentPreviewImageIndex);
+    // console.dir(this.#imageElements[this.#currentPreviewImageIndex]);
     
-  
 
+  
+  this.#imageElements.forEach(elem => {
+      console.log(elem)
+      elem.classList.remove("active");
+  })
     this.#imageElements[this.#currentPreviewImageIndex].classList.add("active");
     
 
